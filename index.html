@@ -2113,38 +2113,10 @@
       const data = {};
       days.forEach((day, dayIndex) => {
         const dayStops = [];
-        let currentTime = 8 * 60 + 30; // Start at 8:30 AM
+        let currentTime = 9 * 60 + 2; // Start at 9:02 AM
         
         // Monday uses real data from spreadsheet
         if (day === 'Monday') {
-          // Collect ALL parts needed for the ENTIRE WEEK (Mon-Fri) for warehouse pickup
-          const partsMap = new Map();
-          const weeklyTasks = [...mondayTasks, ...tuesdayTasks, ...wednesdayTasks, ...thursdayTasks, ...fridayTasks];
-          weeklyTasks.forEach(task => {
-            if (task.parts && task.parts.length > 0) {
-              task.parts.forEach(p => {
-                const key = p.partNumber || p.name;
-                if (partsMap.has(key)) {
-                  partsMap.get(key).qty += p.qty;
-                } else {
-                  partsMap.set(key, { ...p });
-                }
-              });
-            }
-          });
-          const allParts = Array.from(partsMap.values());
-          
-          // Add pickup stop first with all parts for the week
-          dayStops.push({ 
-            id: 'Monday-0', siteId: sites[0].id, siteName: sites[0].name, 
-            type: 'pickup', workType: 'pickup', ...workTypes.pickup, 
-            duration: 30, startTime: currentTime, 
-            lat: sites[0].lat, lng: sites[0].lng, 
-            parts: allParts, 
-            notes: 'Collect all parts for weekly maintenance tasks (Mon-Fri)' 
-          });
-          currentTime += 45;
-          
           // Add all Monday tasks from spreadsheet
           mondayTasks.forEach(task => {
             dayStops.push({
@@ -2358,7 +2330,7 @@
     }
     
     // MAP - Mapbox
-    const MAPBOX_TOKEN = 'pk.eyJ1IjoiYXJndGxzajg1IiwiYSI6ImNtamVzNXpjMTBsaXAzZXBxNXhrcWRsemoifQ.txr1SDmg4TfQGHFMek8mVA';
+    const MAPBOX_TOKEN = window.MAPBOX_TOKEN || 'pk.eyJ1IjoiYXJndGxzajg1IiwiYSI6ImNtamVzNXpjMTBsaXAzZXBxNXhrcWRsemoifQ.txr1SDmg4TfQGHFMek8mVA';
     let markers = [];
     
     async function fetchTravelTime(stops) {
