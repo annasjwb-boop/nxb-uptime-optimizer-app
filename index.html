@@ -2132,8 +2132,8 @@
             stops: dayStops, 
             totalStops: dayStops.length, 
             totalHours: (dayStops.reduce((sum, s) => sum + s.duration, 0) / 60).toFixed(1), 
-            criticalCount: dayStops.filter(s => s.workType === 'critical').length, 
-            partsCount: allParts.length 
+            criticalCount: dayStops.filter(s => s.workType === 'critical').length,
+            partsCount: dayStops.reduce((sum, s) => sum + (s.parts ? s.parts.length : 0), 0)
           };
         } else if (day === 'Tuesday') {
           // Tuesday uses real data from spreadsheet
